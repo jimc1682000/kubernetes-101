@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: int-deployment
+spec:
+  selector:
+    matchLabels:
+      app: demo-nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: demo-nginx
+    spec:
+      containers:
+      - name: nginx
+        image: demo-nginx
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+      - name: django
+        image: demo
+        # command: ["uwsgi", "--socket", ":8000", "--plugin", "python", "--wsgi-file", "test.py"]
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 7000
+          name: django-port
+        - containerPort: 7001
+          name: uwsgi-socket
